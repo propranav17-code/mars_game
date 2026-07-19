@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Mars — CVP</title>
+  <link rel="stylesheet" href="src/ui/ui.css" />
+
+  <!-- Three.js loaded as an ES module from CDN. No build step required. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- 3D canvas is created by Three.js and appended here -->
+  <div id="game"></div>
+
+  <!-- Minimal UI overlay (spec section 14: keep it minimal) -->
+  <div id="ui">
+    <!-- Mission tracker (top-left) -->
+    <div id="mission-panel">
+      <div class="mission-label">MISSION</div>
+      <div id="mission-title">Repair the Water Pipe</div>
+      <ul id="objective-list"></ul>
+    </div>
+
+    <!-- Crosshair (center) -->
+    <div id="crosshair">+</div>
+
+    <!-- Interaction prompt (bottom-center, e.g. "Press E to Repair") -->
+    <div id="prompt"></div>
+
+    <!-- Mission complete banner -->
+    <div id="mission-complete" class="hidden">
+      <div class="mc-title">MISSION COMPLETE</div>
+      <div class="mc-sub">Water flow restored. Mars endures.</div>
+      <div class="mc-hint">Refresh the page to play again.</div>
+    </div>
+  </div>
+
+  <!-- Start / instructions overlay (click to lock the pointer) -->
+  <div id="start-screen">
+    <div class="start-inner">
+      <h1>PROJECT MARS</h1>
+      <p class="subtitle">Concept Validation Prototype — Mission 001</p>
+      <p class="story">
+        Year 2031. A Mars research station lies damaged after a catastrophic
+        landing. You are the only survivor nearby, and life support is failing.
+        Find the engineering wrench and repair the leaking water pipe.
+      </p>
+      <div class="controls">
+        <span><b>W A S D</b> Move</span>
+        <span><b>Mouse</b> Look</span>
+        <span><b>Shift</b> Sprint</span>
+        <span><b>Space</b> Jump</span>
+        <span><b>E</b> Interact</span>
+        <span><b>Esc</b> Pause</span>
+      </div>
+      <button id="start-btn">CLICK TO BEGIN</button>
+    </div>
+  </div>
+
+  <script type="module" src="src/core/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+/* Project Mars CVP — minimal UI (spec §14). NASA-inspired, clean, functional. */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: #eaeaea;
+  user-select: none;
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+}
+
+#game canvas {
+  display: block;
+}
+
+/* ---------- UI overlay ---------- */
+#ui {
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* never block the game canvas */
+  z-index: 10;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Mission panel (top-left) */
+#mission-panel {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  padding: 14px 18px;
+  background: rgba(10, 12, 16, 0.55);
+  border-left: 3px solid #e0673b; /* Mars orange accent */
+  backdrop-filter: blur(4px);
+  border-radius: 4px;
+  max-width: 320px;
+}
+
+.mission-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #e0673b;
+  margin-bottom: 4px;
+}
+
+#mission-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#objective-list {
+  list-style: none;
+  font-size: 13px;
+  line-height: 1.9;
+  color: #c7c7c7;
+}
+
+#objective-list li::before {
+  content: "○ ";
+  color: #888;
+}
+
+#objective-list li.done {
+  color: #6fae5f;
+  text-decoration: line-through;
+  text-decoration-color: rgba(111, 174, 95, 0.5);
+}
+
+#objective-list li.done::before {
+  content: "✔ ";
+  color: #6fae5f;
+}
+
+#objective-list li.active {
+  color: #fff;
+}
+
+#objective-list li.active::before {
+  content: "▸ ";
+  color: #e0673b;
+}
+
+/* Crosshair (center) */
+#crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1;
+}
+
+/* Interaction prompt (bottom-center) */
+#prompt {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background: rgba(10, 12, 16, 0.7);
+  border: 1px solid rgba(224, 103, 59, 0.6);
+  border-radius: 6px;
+  font-size: 15px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+#prompt.show {
+  opacity: 1;
+}
+
+#prompt b {
+  color: #e0673b;
+}
+
+/* Mission complete banner */
+#mission-complete {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(20, 8, 4, 0.4), rgba(0, 0, 0, 0.85));
+  text-align: center;
+  animation: fadeIn 1.2s ease;
+}
+
+.mc-title {
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: #6fae5f;
+  text-shadow: 0 0 30px rgba(111, 174, 95, 0.5);
+}
+
+.mc-sub {
+  font-size: 20px;
+  color: #eaeaea;
+  margin-top: 14px;
+}
+
+.mc-hint {
+  font-size: 14px;
+  color: #999;
+  margin-top: 40px;
+}
+
+/* ---------- Start screen ---------- */
+#start-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #3a1a10, #0a0605);
+}
+
+.start-inner {
+  max-width: 560px;
+  text-align: center;
+  padding: 40px;
+}
+
+.start-inner h1 {
+  font-size: 56px;
+  letter-spacing: 8px;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: #e0673b;
+  margin-bottom: 28px;
+}
+
+.story {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #c7c7c7;
+  margin-bottom: 28px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  justify-content: center;
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 32px;
+}
+
+.controls b {
+  color: #fff;
+}
+
+#start-btn {
+  pointer-events: auto;
+  padding: 14px 40px;
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: #fff;
+  background: #e0673b;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+#start-btn:hover {
+  background: #f27a4d;
+}
+
+#start-btn:active {
+  transform: scale(0.97);
+}
+
+/* Paused hint reuses start screen; add a small note when paused */
+#start-screen.paused .story,
+#start-screen.paused .subtitle {
+  opacity: 0.5;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "project-mars-cvp",
+  "version": "1.0.0",
+  "description": "Project Mars — Concept Validation Prototype. A lightweight browser prototype to validate the core rebuild-and-repair gameplay loop.",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "keywords": ["mars", "prototype", "threejs", "game", "cvp"],
+  "license": "MIT"
+}
